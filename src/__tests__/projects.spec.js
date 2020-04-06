@@ -102,9 +102,9 @@ describe("Projects", () => {
     const response = await request(app)
       .post("/repositories")
       .send({
-        title: "Front-end em React",
-        description: "Um software para listagem de projetos em React",
-        owner: "Diego Fernandes"
+        url: "https://github.com/Rocketseat/umbriel",
+        title: "Umbriel",
+        techs: ["Node", "Express", "TypeScript"]
       });
 
     await request(app)
