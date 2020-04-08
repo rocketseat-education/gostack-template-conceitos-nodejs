@@ -22,7 +22,7 @@ app.put("/repositories/:id", (request, response) => {
   // TODO
 });
 
-app.delete("/repositories/:id", (req, res) => {
+app.delete("/repositories/:id", (request, response) => {
   // TODO
 });
 
