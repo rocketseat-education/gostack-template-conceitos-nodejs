@@ -2,7 +2,7 @@ const request = require("supertest");
 const app = require("../app");
 const { isUuid } = require("uuidv4");
 
-describe("Projects", () => {
+describe("Repositories", () => {
   it("should be able to create a new repository", async () => {
     const response = await request(app)
       .post("/repositories")
@@ -22,7 +22,7 @@ describe("Projects", () => {
     });
   });
 
-  it("should be able to list the projects", async () => {
+  it("should be able to list the repositories", async () => {
     const repository = await request(app)
       .post("/repositories")
       .send({
@@ -73,9 +73,7 @@ describe("Projects", () => {
   });
 
   it("should not be able to update a repository that does not exist", async () => {
-    await request(app)
-      .put(`/repositories/123`)
-      .expect(400);
+    await request(app).put(`/repositories/123`).expect(400);
   });
 
   it("should not be able to update repository likes manually", async () => {
@@ -107,20 +105,16 @@ describe("Projects", () => {
         techs: ["Node", "Express", "TypeScript"]
       });
 
-    await request(app)
-      .delete(`/repositories/${response.body.id}`)
-      .expect(204);
+    await request(app).delete(`/repositories/${response.body.id}`).expect(204);
 
     const repositories = await request(app).get("/repositories");
 
-    const repository = repositories.body.find(r => r.id === response.body.id);
+    const repository = repositories.body.find((r) => r.id === response.body.id);
 
     expect(repository).toBe(undefined);
   });
 
   it("should not be able to delete a repository that does not exist", async () => {
-    await request(app)
-      .delete(`/repositories/123`)
-      .expect(400);
+    await request(app).delete(`/repositories/123`).expect(400);
   });
 });
