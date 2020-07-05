@@ -11,7 +11,7 @@ app.use(cors());
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
-  response.json(repositories)
+  return response.json(repositories);
 });
 
 app.post("/repositories", (request, response) => {
@@ -23,9 +23,9 @@ app.post("/repositories", (request, response) => {
     url, 
     techs,
     likes: 0
-  })
+  });
   
-  response.status(201).json()
+  return response.status(201).json();
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -33,7 +33,11 @@ app.put("/repositories/:id", (request, response) => {
 });
 
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+    const { id } = request.params;
+
+    repositories.splice(id, 1);
+
+    return response.json();
 });
 
 app.post("/repositories/:id/like", (request, response) => {
