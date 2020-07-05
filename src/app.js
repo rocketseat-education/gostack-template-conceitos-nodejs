@@ -11,11 +11,11 @@ app.use(cors());
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
-  return response.json(repositories);
+  return response.json({ repositories });
 });
 
 app.post("/repositories", (request, response) => {
-  const { title, url, techs} = request.body;
+  const { title, url, techs } = request.body;
 
   repositories.push({
     id: uuid(),
@@ -29,15 +29,32 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } =  request.params;
+  const { title, url, techs } = request.body;
+
+  const repository = repositories[repositories.findIndex(repository => repository.id === id)];
+
+  if (title) {
+    repository.title = title;
+  }
+
+  if (url) {
+    repository.url = url;
+  }
+
+  if (techs) {
+    repository.techs = techs;
+  }
+
+  response.json({repository})
 });
 
 app.delete("/repositories/:id", (request, response) => {
-    const { id } = request.params;
+  const { id } = request.params;
 
-    repositories.splice(id, 1);
+  repositories.splice(id, 1);
 
-    return response.json();
+  return response.json();
 });
 
 app.post("/repositories/:id/like", (request, response) => {
