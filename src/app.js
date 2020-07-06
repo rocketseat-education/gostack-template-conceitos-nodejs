@@ -17,15 +17,17 @@ app.get("/repositories", (request, response) => {
 app.post("/repositories", (request, response) => {
   const { title, url, techs } = request.body;
 
-  repositories.push({
+  const index = repositories.push({
     id: uuid(),
     title, 
     url, 
     techs,
     likes: 0
   });
-  
-  return response.status(201).json();
+
+  const repository = repositories.find(element => element = index);
+
+  return response.status(201).json(repository);
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -33,6 +35,10 @@ app.put("/repositories/:id", (request, response) => {
   const { title, url, techs } = request.body;
 
   const repository = repositories[repositories.findIndex(repository => repository.id === id)];
+
+  if (!repository) {
+    return response.status(400).json();
+  }
 
   if (title) {
     repository.title = title;
@@ -46,15 +52,17 @@ app.put("/repositories/:id", (request, response) => {
     repository.techs = techs;
   }
 
-  response.json({repository})
+  response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params;
 
-  repositories.splice(id, 1);
+  const isDeleted = repositories.splice(id, 1);
 
-  return response.status(204);
+  return isDeleted.length > 0 
+  ? response.status(204).json()
+  : response.status(400).json();
 });
 
 app.post("/repositories/:id/like", (request, response) => {
@@ -62,10 +70,13 @@ app.post("/repositories/:id/like", (request, response) => {
 
   const repository = repositories[repositories.findIndex(repository => repository.id === id)];
 
+  if (!repository) {
+    return response.status(400).json();
+  }
+
   repository.likes +=1;
 
-  response.json({repository})
-
+  return response.json(repository);
 });
 
 module.exports = app;
