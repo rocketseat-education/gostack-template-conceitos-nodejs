@@ -10,7 +10,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "uuidv4": "^6.0.7"
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "jest": "^25.2.6",
