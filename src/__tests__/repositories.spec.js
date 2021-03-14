@@ -71,6 +71,24 @@ describe("Repositories", () => {
       techs: ["React", "ReactNative", "TypeScript", "ContextApi"]
     });
   });
+  
+  it("should be able to update repository single atributes", async () => {
+		const repository = await request(app)
+			.post("/repositories")
+			.send({
+				url: "https://github.com/Rocketseat/umbriel",
+				title: "Umbriel",
+				techs: ["Node", "Express", "TypeScript"],
+			});
+
+		const response = await request(app)
+			.put(`/repositories/${repository.body.id}`)
+			.send({
+				url: "https://github.com/Rocketseat/unform",
+			});
+
+		expect(Object.keys(response.body).length === 5).toBe(true);
+	});
 
   it("should not be able to update a repository that does not exist", async () => {
     await request(app).put(`/repositories/123`).expect(400);
